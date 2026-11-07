@@ -1,19 +1,26 @@
-import { useEffect, useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
-import FieldCanvas from '../components/FieldCanvas';
-import PointEditor from '../components/PointEditor';
-import PointTabs from '../components/PointTabs';
-import ScreenContainer from '../components/ScreenContainer';
-import StatusMessage from '../components/StatusMessage';
-import TopNavBar from '../components/TopNavBar';
-import { spacing } from '../constants/theme';
-import { getRoute } from '../services/api';
-import { createPoint, fromApiPoints } from '../utils/points';
+import { useEffect, useState } from "react";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
+import { useLocalSearchParams } from "expo-router";
+import FieldCanvas from "../components/FieldCanvas";
+import PointEditor from "../components/PointEditor";
+import PointTabs from "../components/PointTabs";
+import ScreenContainer from "../components/ScreenContainer";
+import StatusMessage from "../components/StatusMessage";
+import TopNavBar from "../components/TopNavBar";
+import { spacing } from "../constants/theme";
+import { getRoute } from "../services/api";
+import { createPoint, fromApiPoints } from "../utils/points";
 
 // Route editor. Opened empty by "New Route", or with ?routeId=... from Import.
 // Only UI state lives here.
 export default function PlannerScreen() {
+  const backgroundUrl = "https://content.vexrobotics.com/docs/2026-2027/override/online-manual/assets/image/TopView.png";
   const { routeId } = useLocalSearchParams();
   const [points, setPoints] = useState([]); // [{ id, label, x, y, h }] (strings)
   const [selectedId, setSelectedId] = useState(null);
@@ -47,20 +54,46 @@ export default function PlannerScreen() {
     setSelectedId(next.id);
   };
 
+  const handleMovePoint = (id, { x, y }) => {
+    setPoints((prev) => prev.map((p) => (p.id === id ? { ...p, x, y } : p)));
+  };
+
   const handleChangeField = (field, value) => {
-    setPoints(points.map((p) => (p.id === selectedId ? { ...p, [field]: value } : p)));
+    setPoints(
+      points.map((p) => (p.id === selectedId ? { ...p, [field]: value } : p)),
+    );
   };
 
   return (
     <ScreenContainer>
-      <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+      <KeyboardAvoidingView
+        style={styles.flex}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+      >
+        <ScrollView
+          contentContainerStyle={styles.content}
+          keyboardShouldPersistTaps="handled"
+        >
           <TopNavBar />
           {error && <StatusMessage type="error" message={error} />}
-          <FieldCanvas points={points} selectedId={selectedId} />
+          <FieldCanvas
+            points={points}
+            selectedId={selectedId}
+            background={backgroundUrl}
+            onSelect={setSelectedId}
+            onMovePoint={handleMovePoint}
+          />
           <View style={styles.bottomRow}>
-            <PointTabs points={points} selectedId={selectedId} onSelect={setSelectedId} onAdd={handleAddPoint} />
-            <PointEditor point={selectedPoint} onChangeField={handleChangeField} />
+            <PointTabs
+              points={points}
+              selectedId={selectedId}
+              onSelect={setSelectedId}
+              onAdd={handleAddPoint}
+            />
+            <PointEditor
+              point={selectedPoint}
+              onChangeField={handleChangeField}
+            />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -71,5 +104,9 @@ export default function PlannerScreen() {
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   content: { padding: spacing.lg, gap: spacing.md },
-  bottomRow: { flexDirection: 'row', gap: spacing.md, alignItems: 'flex-start' },
+  bottomRow: {
+    flexDirection: "row",
+    gap: spacing.md,
+    alignItems: "flex-start",
+  },
 });
