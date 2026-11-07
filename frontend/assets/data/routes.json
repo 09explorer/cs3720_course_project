@@ -1,0 +1,48 @@
+[
+  {
+    "id": 1,
+    "name": "Skills Run - Left Side",
+    "team": "1234A",
+    "updatedAt": "2026-10-28T15:30:00Z",
+    "thumbnailUrl": null,
+    "points": [
+      { "id": "a", "label": "A", "x": -48, "y": -60, "h": 0 },
+      { "id": "b", "label": "B", "x": -48, "y": -12, "h": 90 },
+      { "id": "c", "label": "C", "x": 0, "y": 24, "h": 135 }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Match Auton - Right Side",
+    "team": "1234A",
+    "updatedAt": "2026-11-02T18:05:00Z",
+    "thumbnailUrl": null,
+    "points": [
+      { "id": "a", "label": "A", "x": 48, "y": -60, "h": 0 },
+      { "id": "b", "label": "B", "x": 48, "y": 0, "h": 270 }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Win Point Sweep",
+    "team": "5678B",
+    "updatedAt": "2026-09-14T12:00:00Z",
+    "thumbnailUrl": null,
+    "points": [
+      { "id": "a", "label": "A", "x": -24, "y": -48, "h": 45 },
+      { "id": "b", "label": "B", "x": 0, "y": -12, "h": 0 },
+      { "id": "c", "label": "C", "x": 24, "y": 24, "h": 315 },
+      { "id": "d", "label": "D", "x": 60, "y": 60, "h": 180 }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Practice Loop",
+    "team": "9012C",
+    "updatedAt": "2026-10-01T09:45:00Z",
+    "thumbnailUrl": null,
+    "points": [
+      { "id": "a", "label": "A", "x": 0, "y": 0, "h": 0 }
+    ]
+  }
+]
