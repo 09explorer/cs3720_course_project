@@ -2,7 +2,6 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import ScreenContainer from '../components/ScreenContainer';
 import TopNavBar from '../components/TopNavBar';
 import { colors, fontSize, radius, spacing } from '../constants/theme';
-import { API_BASE_URL, USE_MOCK_DATA } from '../services/api';
 
 // Settings placeholder. For now it only shows where the app gets its data.
 // Add real options here later (units, default heading, ...).
@@ -13,10 +12,7 @@ export default function SettingsScreen() {
         <TopNavBar />
         <Text style={styles.title}>Settings</Text>
         <View style={styles.card}>
-          <Text style={styles.label}>Server address</Text>
-          <Text style={styles.value}>{API_BASE_URL}</Text>
-          <Text style={styles.label}>Data source</Text>
-          <Text style={styles.value}>{USE_MOCK_DATA ? 'Sample data' : 'FastAPI backend'}</Text>
+          <Text style={styles.label}>PLACEHOLDER - no settings to configure yet</Text>
         </View>
       </ScrollView>
     </ScreenContainer>
