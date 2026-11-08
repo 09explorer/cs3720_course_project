@@ -20,7 +20,8 @@ import { createPoint, fromApiPoints } from "../utils/points";
 // Route editor. Opened empty by "New Route", or with ?routeId=... from Import.
 // Only UI state lives here.
 export default function PlannerScreen() {
-  const backgroundUrl = "https://content.vexrobotics.com/docs/2026-2027/override/online-manual/assets/image/TopView.png";
+  const backgroundUrl =
+    "https://content.vexrobotics.com/docs/2026-2027/override/online-manual/assets/image/TopView.png";
   const { routeId } = useLocalSearchParams();
   const [points, setPoints] = useState([]); // [{ id, label, x, y, h }] (strings)
   const [selectedId, setSelectedId] = useState(null);
@@ -48,6 +49,17 @@ export default function PlannerScreen() {
 
   const selectedPoint = points.find((p) => p.id === selectedId);
 
+  // Determines the label for a new point based on its index
+  const indexToLabel = (i) => {
+  let n = Math.max(0, i);
+  let s = '';
+  do {
+    s = String.fromCharCode(65 + (n % 26)) + s;
+    n = Math.floor(n / 26) - 1;
+  } while (n >= 0);
+  return s;
+};
+
   const handleAddPoint = () => {
     const next = createPoint(points.length);
     setPoints([...points, next]);
@@ -56,6 +68,18 @@ export default function PlannerScreen() {
 
   const handleMovePoint = (id, { x, y }) => {
     setPoints((prev) => prev.map((p) => (p.id === id ? { ...p, x, y } : p)));
+  };
+
+  const handleDeletePoint = (id) => {
+    const index = points.findIndex((p) => p.id === id);
+    if (index === -1) return;
+
+    const remaining = points.filter((p) => p.id !== id);
+    setPoints(remaining);
+
+    // Previous point if there is one, otherwise the point that followed the
+    // deleted one (it has shifted into the same index), otherwise nothing.
+    setSelectedId(remaining[index - 1]?.id ?? remaining[index]?.id ?? null);
   };
 
   const handleChangeField = (field, value) => {
@@ -74,7 +98,7 @@ export default function PlannerScreen() {
           contentContainerStyle={styles.content}
           keyboardShouldPersistTaps="handled"
         >
-          <TopNavBar />
+          <TopNavBar points={points} />
           {error && <StatusMessage type="error" message={error} />}
           <FieldCanvas
             points={points}
@@ -93,6 +117,8 @@ export default function PlannerScreen() {
             <PointEditor
               point={selectedPoint}
               onChangeField={handleChangeField}
+              onDelete={handleDeletePoint}
+              defaultLabel={indexToLabel(points.findIndex((p) => p.id === selectedId))}
             />
           </View>
         </ScrollView>
