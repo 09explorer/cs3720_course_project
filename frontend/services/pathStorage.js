@@ -48,3 +48,16 @@ export async function savePath({ name, team = '', points = [] }) {
   await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(paths));
   return record;
 }
+
+// Returns the saved path with this exact name, or undefined if there isn't one.
+export async function getPathByName(name) {
+  const paths = await getPaths();
+  return paths.find((p) => p['Path Name'] === name);
+}
+
+// Removes the saved path with this name. Does nothing if it doesn't exist.
+export async function deletePath(name) {
+  const paths = await getPaths();
+  const remaining = paths.filter((p) => p['Path Name'] !== name);
+  await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(remaining));
+}

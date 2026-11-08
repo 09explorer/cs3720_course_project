@@ -14,7 +14,7 @@ import ScreenContainer from "../components/ScreenContainer";
 import StatusMessage from "../components/StatusMessage";
 import TopNavBar from "../components/TopNavBar";
 import { spacing } from "../constants/theme";
-import { getRoute } from "../services/api";
+import { getPathByName } from '../services/pathStorage';
 import { createPoint, fromApiPoints } from "../utils/points";
 
 // Route editor. Opened empty by "New Route", or with ?routeId=... from Import.
@@ -27,20 +27,21 @@ export default function PlannerScreen() {
   const [selectedId, setSelectedId] = useState(null);
   const [error, setError] = useState(null);
 
-  // Load a saved route when opened from the Import screen.
-  useEffect(() => {
-    if (!routeId) return;
-    (async () => {
-      try {
-        const route = await getRoute(routeId);
-        const loaded = fromApiPoints(route.points);
-        setPoints(loaded);
-        setSelectedId(loaded[0]?.id ?? null);
-      } catch (err) {
-        setError(err.message);
-      }
-    })();
-  }, [routeId]);
+ // replaces the existing import of getRoute
+useEffect(() => {
+  if (!routeId) return;
+  (async () => {
+    try {
+      const path = await getPathByName(routeId);
+      if (!path) throw new Error('That path could not be found.');
+      const loaded = path.Points; // already in { id, label, x, y, h } form
+      setPoints(loaded);
+      setSelectedId(loaded[0]?.id ?? null);
+    } catch (err) {
+      setError(err.message);
+    }
+  })();
+}, [routeId]);
 
   // WIRING POINT: runs whenever points change. Send them to the backend here.
   useEffect(() => {
