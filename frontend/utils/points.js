@@ -12,7 +12,7 @@ export function labelForIndex(index) {
   return label;
 }
 
-export function createPoint(index, x = 0, y = 0, h = 0) {
+export function createPoint(index, x = 70, y = 72, h = 0) {
   return {
     id: `p-${Date.now()}-${index}`,
     label: labelForIndex(index),

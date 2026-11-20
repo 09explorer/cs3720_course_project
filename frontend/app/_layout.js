@@ -11,6 +11,8 @@ export default function RootLayout() {
         headerShown: false,
         contentStyle: { backgroundColor: colors.bg },
       }}
-    />
+    >
+      <Stack.Screen name="planner" options={{ gestureEnabled: false }} />
+    </Stack>
   );
 }
