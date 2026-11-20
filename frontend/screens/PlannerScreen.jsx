@@ -95,7 +95,7 @@ useEffect(() => {
         style={styles.flex}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
-        <ScrollView
+        <View
           contentContainerStyle={styles.content}
           keyboardShouldPersistTaps="handled"
         >
@@ -122,7 +122,7 @@ useEffect(() => {
               defaultLabel={indexToLabel(points.findIndex((p) => p.id === selectedId))}
             />
           </View>
-        </ScrollView>
+        </View>
       </KeyboardAvoidingView>
     </ScreenContainer>
   );
